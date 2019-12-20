@@ -14,3 +14,19 @@ body{
     width: 500px;
     height: 500px;
 }
+
+#game{
+    border: solid 1px gray;
+}
+
+#score{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#finish{
+    width: 500px;
+    height: 500px;
+    background: red;
+}

@@ -1,14 +1,15 @@
-var paintSnake = (document.getElementById("snake")).getContext("2d");
+var paintGame = (document.getElementById("game")).getContext("2d");
 var headSnake = {x:200, y:200};
 var bodySnake = [];
-var tailSnake = {x:140, y:200};
+var tailSnake = {x:170, y:200};
 var direction = 'rigth';
 var fruit = {x:0, y:0};
+var score = 0;
 
     
-bodySnake.push({x: 0, y: 0})
+bodySnake.push({x: -10, y: -10})
 bodySnake.push({x:180, y:200})
-bodySnake.push({x:160, y:200})
+bodySnake.push({x:170, y:200})
 
 var game = setInterval(start, 200);
 
@@ -19,22 +20,26 @@ $('body').keydown(function(event){
         case 37:
         case 65:
             start();
-            direction = 'left';
+            if(direction!= 'rigth')
+                direction = 'left';
             break;
         case 38:
         case 87:
             start();
-            direction = 'up';
+            if(direction!= 'down')
+                direction = 'up';
             break;
         case 39:
         case 68:
             start();
-            direction = 'rigth';
+            if(direction!= 'left')
+                direction = 'rigth';
             break;
         case 40:
         case 83:
             start();
-            direction = 'down';
+            if(direction!= 'up')
+                direction = 'down';
             break;
         case 32:
             start();
@@ -45,14 +50,49 @@ $('body').keydown(function(event){
 
 function start(){ 
 
-    if(headSnake.x == fruit.x && headSnake.y == fruit.y)
-        eatFruit();
-    
-    if(checkCollision())
-        clearInterval(game);
+    $('span').text(score)
+             .css('font-size', '40px')
+             .css('margin-left', '20px')
 
-    paintSnake.clearRect(tailSnake.x, tailSnake.y, 20, 20);
-    paintSnake.fillRect(headSnake.x, headSnake.y, 20, 20);
+    if(headSnake.x == fruit.x && headSnake.y == fruit.y)
+        eatFruit();        
+    
+    switch(direction){
+        case 'left':
+            if(headSnake.x == 0)
+            headSnake.x = 490;
+            else
+            headSnake.x -= 10;
+            break;
+        case 'up':
+            if(headSnake.y == 0)
+            headSnake.y = 490;
+            else
+            headSnake.y -= 10;
+            break;
+        case 'rigth':
+            if(headSnake.x == 490)
+            headSnake.x = 0;
+            else
+            headSnake.x += 10;
+            break;
+        case 'down':
+            if(headSnake.y == 490)
+            headSnake.y = 0;
+            else
+            headSnake.y += 10;
+            break;
+    }
+
+    if(checkCollision())
+       clearInterval(game);
+
+        paintGame.fillStyle = '#00FF7F';
+        paintGame.fillRect(bodySnake[0].x, bodySnake[0].y, 10, 10);
+        paintGame.clearRect(tailSnake.x, tailSnake.y, 10, 10);
+        paintGame.fillStyle = '#8FBC8F';
+        paintGame.fillRect(headSnake.x, headSnake.y, 10, 10);
+        
     
     bodySnake[0].x = headSnake.x;
     bodySnake[0].y = headSnake.y;
@@ -64,50 +104,25 @@ function start(){
         bodySnake[i].x = bodySnake[i-1].x;
         bodySnake[i].y = bodySnake[i-1].y;
     }
-    
-    switch(direction){
-        case 'left':
-            if(headSnake.x == 0)
-            headSnake.x = 500;
-            else
-            headSnake.x -= 20;
-            break;
-        case 'up':
-            if(headSnake.y == 0)
-            headSnake.y = 500;
-            else
-            headSnake.y -= 20;
-            break;
-        case 'rigth':
-            if(headSnake.x == 500)
-            headSnake.x = 0;
-            else
-            headSnake.x += 20;
-            break;
-        case 'down':
-            if(headSnake.y == 500)
-            headSnake.y = 0;
-            else
-            headSnake.y += 20;
-            break;
-    }
                    
 }
 
 
 function eatFruit(){
     createFruit();
-    bodySnake.push({x: tailSnake.x, y: tailSnake.y});   
+    score++;
+    bodySnake.push({x: tailSnake.x, y: tailSnake.y}); 
 }
 
 
 function createFruit(){
-    fruit.x = Math.floor(Math.random() * (24 - 1)) * 20;
-    fruit.y = Math.floor(Math.random() * (24 - 1)) * 20;
+    fruit.x = Math.floor(Math.random() * (24 - 1)) * 10;
+    fruit.y = Math.floor(Math.random() * (24 - 1)) * 10;
 
-    paintSnake.beginPath();
-    paintSnake.arc(fruit.x+10, fruit.y+10, 5, 0, 100);
-    paintSnake.fill();
+    paintGame.fillStyle = 'blue';
+    paintGame.beginPath();
+    paintGame.arc(fruit.x+5, fruit.y+5, 3, 0, 100);
+    paintGame.fill();
 }
 
 function checkCollision(){
