@@ -12,8 +12,10 @@ body{
 }
 
 #container{
-    width: auto;
+    display: flex;
+    width: 1240px;
     height: auto;
+    justify-content: space-around;
 }
 
 #myCanvas{
@@ -27,8 +29,24 @@ body{
     align-items: center;
 }
 
-#finish{
-    width: 500px;
-    height: 500px;
-    background: red;
+#score{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+#menu{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.btn-levels{
+    width: 80%;
+    height: 20%;
+    background: gray;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 2vw;
 }

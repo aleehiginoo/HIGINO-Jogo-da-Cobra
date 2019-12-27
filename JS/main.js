@@ -14,24 +14,36 @@ var imgShit = new Image();
 imgShit.src = 'Imagens/shit.png';
 var border = 0; 
 var walk = false;
-
-var game = setInterval(start, speed);
+var game;
 
 createFruit();
 createShit();
+
+$('#btn-lvl-easy').click(function(){toStart(200)})
+
+$('#btn-lvl-normal').click(function(){toStart(100)})
+
+$('#btn-lvl-hard').click(function(){toStart(50)})
+
+function toStart(speedStart) {
+    speed = speedStart,
+    clearInterval(game);
+    game = setInterval(start, speed)
+    $('body').on('keydown');
+}
 
 $('body').keydown(function(event){
     switch(event.which){
         case 37:
         case 65:
             start();
-            if(direction != 'right')
+            if(direction!= 'rigth')
                 direction = 'left';
             break;
         case 38:
         case 87:
             start();
-            if(direction != 'down')
+            if(direction!= 'down')
                 direction = 'up';
             break;
         case 39:
@@ -48,7 +60,6 @@ $('body').keydown(function(event){
             break;
         case 32:
             start();
-            clearInterval(game);
             break;
         }
     })
@@ -118,13 +129,7 @@ $('body').keydown(function(event){
             break;
     }
 
-    if(checkCollision()){
-        clearInterval(game);
-        for(var i = 0; i < 16; i++)
-         $('#game').fadeToggle(200);
-    }
-
-        
+    checkCollision();
        
        for(var i = bodySnake.length - 1; i >= 0 ; i--){
            paintGame.beginPath();
@@ -196,6 +201,14 @@ function createShit(){
 
 function checkCollision(){
     for(var i=0; i<bodySnake.length; i++)
-    if(headSnake.x === bodySnake[i].x && headSnake.y === bodySnake[i].y && walk)
-    return true;
+    if(headSnake.x === bodySnake[i].x && headSnake.y === bodySnake[i].y){
+        clearInterval(game);
+        for(var i = 0; i < 15; i++)
+        $('#game').fadeToggle(200);
+
+         $('#game').fadeToggle(200, function() {
+            paintGame.fillStyle = 'red';
+            paintGame.fillRect(0,0,495,495);
+         });
+    }
 }
