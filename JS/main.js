@@ -17,10 +17,25 @@ bodySnake.push({x: -50, y: -50})
 bodySnake.push({x:195, y:195})
 bodySnake.push({x:195, y:195})
 
-var game = setInterval(start, speed);
+var game;
 
 createFruit();
 createShit();
+
+$('#btn-lvl-easy').click(function(){toStart(200)})
+
+$('#btn-lvl-normal').click(function(){toStart(100)})
+
+$('#btn-lvl-hard').click(function(){toStart(50)})
+
+function toStart(speedStart) {
+    speed = speedStart,
+    clearInterval(game);
+    game = setInterval(start, speed)
+    $('body').on('keydown');
+    headSnake.x =195
+    headSnake.y = 195;
+}
 
 $('body').keydown(function(event){
     switch(event.which){
@@ -50,7 +65,6 @@ $('body').keydown(function(event){
             break;
         case 32:
             start();
-            clearInterval(game);
             break;
         }
     })
@@ -112,12 +126,7 @@ $('body').keydown(function(event){
             break;
     }
 
-    if(checkCollision()){
-        clearInterval(game);
-        for(var i = 0; i < 16; i++){
-         $('#game').fadeToggle(200);
-         console.log(i);}
-        }
+    checkCollision();
        
        for(var i = bodySnake.length - 1; i > 0 ; i--){
            paintGame.beginPath();
@@ -164,6 +173,14 @@ function createShit(){
 
 function checkCollision(){
     for(var i=0; i<bodySnake.length; i++)
-    if(headSnake.x === bodySnake[i].x && headSnake.y === bodySnake[i].y)
-    return true;
+    if(headSnake.x === bodySnake[i].x && headSnake.y === bodySnake[i].y){
+        clearInterval(game);
+        for(var i = 0; i < 15; i++)
+        $('#game').fadeToggle(200);
+
+         $('#game').fadeToggle(200, function() {
+            paintGame.fillStyle = 'red';
+            paintGame.fillRect(0,0,495,495);
+         });
+    }
 }
