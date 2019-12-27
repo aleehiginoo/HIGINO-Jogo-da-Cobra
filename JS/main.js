@@ -8,16 +8,26 @@ var counter = 0;
 var imgHead = new Image();
 var imgFruit = new Image();
 var imgShit = new Image();
+var imgBegin = new Image();
 var imgGameOver = new Image();
 var stop = false;
 
 imgFruit.src = 'Imagens/strawberry.png';
 imgShit.src = 'Imagens/shit.png';
+imgBegin.src = 'Imagens/begin.png'
 imgGameOver.src = 'Imagens/game-over.png';
+
+imgBegin.onload = function(params) {
+    paintGame.fillStyle = '#D8F6CE';
+    paintGame.fillRect(0, 0, 495, 495);
+    paintGame.drawImage(imgBegin, 0, 100, 495, 250)
+    paintGame.fillStyle = '#000000';
+    paintGame.font = '25px Lucida Sans';          
+    paintGame.fillText('Escolha um nível para Iniciar o Jogo', 30,410);
+}
 
 $('legend').css('font-size', '40px')
         .css('margin-left', '20px')
-
 
 $('#btn-lvl-easy').click(function(){toStart(200, 0), $('#btn-lvl-easy').addClass('active')})
 
@@ -38,7 +48,6 @@ function toStart(speedStart, beginBorder) {
     speed = speedStart,
     clearInterval(game);
     game = setInterval(start, speed)
-    $('body').on('keydown');
     stop = false;
     $(".btn-levels").prop("disabled", true);
 }
@@ -49,25 +58,25 @@ $('body').keydown(function(event){
         case 37:
         case 65:
             start();
-            if(direction!= 'right')
+            if(direction!= 'right' || bodySnake.length > 3)
                 direction = 'left';
             break;
         case 38:
         case 87:
             start();
-            if(direction!= 'down')
+            if(direction!= 'down' || bodySnake.length > 3)
                 direction = 'up';
             break;
         case 39:
         case 68:
             start();
-            if(direction != 'left')
+            if(direction != 'left' || bodySnake.length > 3)
                 direction = 'right';
             break;
         case 40:
         case 83:
             start();
-            if(direction != 'up')
+            if(direction != 'up' || bodySnake.length > 3)
                 direction = 'down';
             break;
         case 32:
@@ -196,16 +205,16 @@ function checkCollision(){
     for(var i=0; i<bodySnake.length; i++)
     if(headSnake.x === bodySnake[i].x && headSnake.y === bodySnake[i].y){
         clearInterval(game);
-        for(var i = 0; i < 15; i++)
+        for(var j = 0; j < 15; j++)
         $('#game').fadeToggle(200);
 
          $('#game').fadeToggle(200, function() {
-            paintGame.fillStyle = '#000000';
+            paintGame.fillStyle = '#D8F6CE';
             paintGame.fillRect(0, 0, 495, 495);
-            paintGame.drawImage(imgGameOver, 0, 70, 495, 300);
-            paintGame.fillStyle = '#eeeeee';
+            paintGame.drawImage(imgGameOver, 0, 70, 495, 280);
+            paintGame.fillStyle = '#000000';
             paintGame.font = '30px Lucida Sans';
-            paintGame.fillText('Your Score: ' + score, 150,380);   
+            paintGame.fillText('Your Score: ' + score, 150,410);   
             paintGame.font = '20px Lucida Sans';          
             paintGame.fillText('Escolha um nível para recomeçar', 90,450);
             $(".btn-levels").prop("disabled", false );
