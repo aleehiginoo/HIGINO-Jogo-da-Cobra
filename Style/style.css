@@ -8,6 +8,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #D8F6CE;
 }
 
 #container{
@@ -19,13 +20,26 @@ body{
 
 #myCanvas{
     height: 495px;
-    border: solid 1px gray;
+    background: #fFFBF8;
 }
 
 #score{
     width: 20%;
+    height: 495px;
+    display: flex;
+}
+
+#score fieldset{
+    width: 100%;
+    height: 495px;
+}
+
+#span{
+    height: 400px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    font-size: 8vw;
 }
 
 #menu{
@@ -39,7 +53,11 @@ body{
 .btn-levels{
     width: 80%;
     height: 20%;
-    background: gray;
+    background: #31B404;
     font-family: "Comic Sans MS", cursive, sans-serif;
     font-size: 2vw;
+}
+
+.active{
+    color: #FFFFFF;
 }
