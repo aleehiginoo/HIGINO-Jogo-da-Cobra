@@ -51,7 +51,6 @@ function toStart(speedStart, beginBorder) {
     stop = false;
     $(".btn-levels").prop("disabled", true);
 }
-
 $('body').keydown(function(event){
     if(!stop){
     switch(event.which){
@@ -113,27 +112,12 @@ function start(){
     }
 
     checkCollision();
-       
-    for(var i = bodySnake.length - 1; i >= 0 ; i--){
-        paintGame.beginPath();
-        paintGame.fillStyle = '#00FF7F';
-        paintGame.rect(bodySnake[i].x, bodySnake[i].y, 15, 15);
-        paintGame.fill();
-        paintGame.stroke();
-    }
+     
+    toPaint();
 
     paintBorder();
-    paintGame.drawImage(imgFruit, fruit.x, fruit.y, 15 , 15);
-    paintGame.drawImage(imgShit, shit.x, shit.y, 15 , 15);        
-    paintGame.drawImage(imgHead, headSnake.x-8, headSnake.y-8, 30, 30);
-        
-    for(var i = bodySnake.length - 1; i > 0 ; i--){
-        bodySnake[i].x = bodySnake[i-1].x;
-        bodySnake[i].y = bodySnake[i-1].y;
-    }
     
-    bodySnake[0].x = headSnake.x;
-    bodySnake[0].y = headSnake.y;
+    updateSnake();
 }
 
 function toWalk(pos, pos2, dir, begin, end, inc){
@@ -145,6 +129,30 @@ function toWalk(pos, pos2, dir, begin, end, inc){
         else
         pos += inc;
     return pos;
+}
+
+function toPaint(){
+    for(var i = bodySnake.length - 1; i >= 0 ; i--){
+        paintGame.beginPath();
+        paintGame.fillStyle = '#00FF7F';
+        paintGame.rect(bodySnake[i].x, bodySnake[i].y, 15, 15);
+        paintGame.fill();
+        paintGame.stroke();
+    }
+
+    paintGame.drawImage(imgFruit, fruit.x, fruit.y, 15 , 15);
+    paintGame.drawImage(imgShit, shit.x, shit.y, 15 , 15);        
+    paintGame.drawImage(imgHead, headSnake.x-8, headSnake.y-8, 30, 30);
+}
+
+function updateSnake(){
+    for(var i = bodySnake.length - 1; i > 0 ; i--){
+        bodySnake[i].x = bodySnake[i-1].x;
+        bodySnake[i].y = bodySnake[i-1].y;
+    }
+    
+    bodySnake[0].x = headSnake.x;
+    bodySnake[0].y = headSnake.y;
 }
 
 function eatFruit(){
@@ -194,10 +202,12 @@ function paintBorder(){
 function randomPos(sort) {
     sort.x = Math.floor(Math.random() * (33 - 1)) * 15;
     sort.y = Math.floor(Math.random() * (33 - 1)) * 15;
-    if(sort.x != headSnake.x && sort.y != headSnake.y)
-        for(var i=0; i < bodySnake.length; i++)
+    if(sort.x === headSnake.x && sort.y === headSnake.y)
+        randomPos(sort);
+    else
+        for(var i=0; i < bodySnake.length; i++){
           bodySnake[i].x == sort.x && bodySnake[i].y == sort.y ? randomPos(sort) : null;
-
+        }
     return sort;
 }
 
